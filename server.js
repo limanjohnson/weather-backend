@@ -27,6 +27,8 @@ app.get("/weather", async (req, res) => {
         const response = await fetch(weatherAPI);
         const data = await response.json();
 
+        console.log(data); // Inside your `/weather` endpoint
+
         if (!response.ok) {
             throw new Error(data.message || "Unable to fetch weather data");
         }
@@ -46,6 +48,8 @@ app.get("/weather", async (req, res) => {
         res.status(500).send({ error: error.message });
     }
 });
+
+
 
 // Start the server
 app.listen(PORT, () => {
