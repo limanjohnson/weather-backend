@@ -1,11 +1,17 @@
 import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config(); // Load environment variables from a .env file
 
 const app = express();
 const PORT = process.env.PORT || 5000; // Use Render-assigned PORT or default to 5000
+
+app.use(cors({
+    origin: "*", // Allow all origins (change to frontend URL for production security)
+    methods: ["GET", "POST"] // Specify allowed methods if needed (e.g., GET, POST)
+}));
 
 app.get("/weather", async (req, res) => {
     const city = req.query.q;
