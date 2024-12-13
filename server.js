@@ -7,23 +7,35 @@ dotenv.config(); // Load environment variables from a .env file
 const app = express();
 const PORT = process.env.PORT || 5000; // Use Render-assigned PORT or default to 5000
 
-// Weather endpoint
 app.get("/weather", async (req, res) => {
-    const city = req.query.q; // City sent as a query parameter, e.g., ?q=London
+    const city = req.query.q;
+
     if (!city) {
         return res.status(400).send({ error: "City is required" });
     }
 
-    const API_KEY = process.env.OPENWEATHERMAP_API_KEY; // Use your API key
+    const API_KEY = process.env.OPENWEATHERMAP_API_KEY;
     const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
 
     try {
         const response = await fetch(weatherAPI);
-        if (!response.ok) {
-            throw new Error("Unable to fetch weather data");
-        }
         const data = await response.json();
-        res.json(data); // Send weather data back to the frontend
+
+        if (!response.ok) {
+            throw new Error(data.message || "Unable to fetch weather data");
+        }
+
+        // Format the data for the frontend
+        const formattedData = {
+            city: data.name,
+            country: data.sys.country,
+            temperature: data.main.temp,
+            weather: data.weather[0].description,
+            humidity: data.main.humidity,
+            windSpeed: data.wind.speed
+        };
+
+        res.json(formattedData);
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
