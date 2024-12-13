@@ -13,6 +13,9 @@ app.use(cors({
     methods: ["GET", "POST"] // Specify allowed methods if needed (e.g., GET, POST)
 }));
 
+// Store Search History
+let searchHistory = [];
+
 app.get("/weather", async (req, res) => {
     const city = req.query.q;
 
@@ -43,12 +46,19 @@ app.get("/weather", async (req, res) => {
             windSpeed: data.wind.speed
         };
 
+        if (!searchHistory.some(entry => entry.city === formattedData.city)) {
+            searchHistory.push(formattedData);
+        }
+
         res.json(formattedData);
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 });
 
+app.get("/history", (req, res) => {
+    res.json(searchHistory);
+})
 
 
 // Start the server
