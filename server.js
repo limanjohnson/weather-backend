@@ -1,6 +1,6 @@
-const express = require("express");
-const fetch = require("node-fetch");
-const dotenv = require("dotenv");
+import express from "express";
+import fetch from "node-fetch";
+import dotenv from "dotenv";
 
 dotenv.config(); // Load environment variables from a .env file
 
