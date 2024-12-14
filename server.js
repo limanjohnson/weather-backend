@@ -17,7 +17,7 @@ app.use(cors({
 let searchHistory = [];
 
 app.get("/weather", async (req, res) => {
-    const city = req.query.q;
+    const city = req.query.q?.trim().toLowerCase();
 
     if (!city) {
         return res.status(400).send({ error: "City is required" });
@@ -46,7 +46,10 @@ app.get("/weather", async (req, res) => {
             windSpeed: data.wind.speed
         };
 
-        if (!searchHistory.some(entry => entry.city === formattedData.city)) {
+        // Log formattedData to the server console
+        console.log("Formatted Weather Data: ", formattedData);
+
+        if (!searchHistory.some(entry => entry.city.toLowerCase() === formattedData.city)) {
             searchHistory.push(formattedData);
         }
 
