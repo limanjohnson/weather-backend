@@ -1,3 +1,9 @@
+/*
+* Author: Liam Nell
+* Date: Dec 14, 2024
+*
+* */
+
 import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
